@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +26,7 @@ public class Inbox {
     private LocalDateTime expiryTime;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "inbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Email> emails;
 }
