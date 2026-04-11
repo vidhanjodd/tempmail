@@ -17,11 +17,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
-                                "/create",
-                                "/inbox/**",
+                                "/index.html",
+                                "/inbox.html",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/api/**"
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
