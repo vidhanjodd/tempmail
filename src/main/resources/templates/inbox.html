@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inbox</title>
+</head>
+<body>
+
+<h2>Your Temporary Email</h2>
+
+<p>Email: <b th:text="${inbox.emailAddress}"></b></p>
+<p>Expires At: <span th:text="${inbox.expiryTime}"></span></p>
+
+<a th:href="@{'/inbox/' + ${inbox.emailAddress}}">
+    Refresh Inbox
+</a>
+
+</body>
+</html>
