@@ -1,0 +1,787 @@
+TempMail Project Code Bundle
+Generated from: /home/vidhan/SpringBootApplications/tempmail
+Included: src/main/java/**/*.java and src/main/resources/static/**/*.{html,css,js}
+
+
+================================================================================
+FILE START: src/main/java/com/TempmailApplication.java
+================================================================================
+
+package com;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+
+@SpringBootApplication
+@EnableScheduling
+public class TempmailApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(TempmailApplication.class, args);
+	}
+
+}
+
+
+================================================================================
+FILE END: src/main/java/com/TempmailApplication.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/config/SecurityConfig.java
+================================================================================
+
+package com.tempmail.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf(csrf -> csrf.disable())
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/inbox.html",
+                                "/css/**",
+                                "/js/**",
+                                "/api/**"
+                        ).permitAll()
+                        .anyRequest().permitAll()
+                )
+
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable());
+
+        return http.build();
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/config/SecurityConfig.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/controller/EmailController.java
+================================================================================
+
+package com.tempmail.controller;
+
+import com.tempmail.dto.EmailDto;
+import com.tempmail.service.EmailService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/emails")
+@RequiredArgsConstructor
+public class EmailController {
+
+    private final EmailService emailService;
+
+    @PostMapping("/test")
+    public String addEmail(
+            @RequestParam String email,
+            @RequestParam String sender,
+            @RequestParam String subject,
+            @RequestParam String body
+    ) {
+        emailService.addTestEmail(email, sender, subject, body);
+        return "Email added successfully";
+    }
+
+    @GetMapping("/{email}")
+    public List<EmailDto> getEmails(@PathVariable String email) {
+        return emailService.getEmails(email);
+    }
+    @PostMapping("/receive")
+    public String receiveEmail(
+            @RequestParam(value = "sender", required = false) String sender,
+            @RequestParam(value = "subject", required = false) String subject,
+            @RequestParam(value = "body-plain", required = false) String body,
+            @RequestParam(value = "recipient", required = false) String recipient
+    ) {
+        emailService.receiveEmail(sender, subject, body, recipient);
+        return "Email received successfully";
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/controller/EmailController.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/controller/InboxController.java
+================================================================================
+
+package com.tempmail.controller;
+
+import com.tempmail.dto.InboxDto;
+import com.tempmail.service.InboxService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/inbox")
+@RequiredArgsConstructor
+public class InboxController {
+
+    private final InboxService inboxService;
+
+    @PostMapping("/create")
+    public InboxDto createInbox() {
+        return inboxService.createInbox();
+    }
+
+    @GetMapping("/{email}")
+    public InboxDto getInbox(@PathVariable String email) {
+        return inboxService.getInbox(email);
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/controller/InboxController.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/dto/EmailDto.java
+================================================================================
+
+package com.tempmail.dto;
+
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class EmailDto {
+
+    private UUID id;
+    private String sender;
+    private String subject;
+    private String body;
+    private LocalDateTime receivedAt;
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/dto/EmailDto.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/dto/InboxDto.java
+================================================================================
+
+package com.tempmail.dto;
+
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class InboxDto {
+
+    private UUID id;
+    private String emailAddress;
+    private LocalDateTime expiryTime;
+    private LocalDateTime createdAt;
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/dto/InboxDto.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/entity/Email.java
+================================================================================
+
+package com.tempmail.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "emails")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Email {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    private String sender;
+
+    private String subject;
+
+    @Column(columnDefinition = "TEXT")
+    private String body;
+
+    private LocalDateTime receivedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "inbox_id")
+    private Inbox inbox;
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/entity/Email.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/entity/Inbox.java
+================================================================================
+
+package com.tempmail.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table(name = "inbox")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Inbox {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Column(unique = true, nullable = false)
+    private String emailAddress;
+
+    private LocalDateTime expiryTime;
+
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "inbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Email> emails;
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/entity/Inbox.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/mapper/EmailMapper.java
+================================================================================
+
+package com.tempmail.mapper;
+
+import com.tempmail.dto.EmailDto;
+import com.tempmail.entity.Email;
+
+public class EmailMapper {
+
+    public static EmailDto toDto(Email email) {
+        return EmailDto.builder()
+                .id(email.getId())
+                .sender(email.getSender())
+                .subject(email.getSubject())
+                .body(email.getBody())
+                .receivedAt(email.getReceivedAt())
+                .build();
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/mapper/EmailMapper.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/mapper/InboxMapper.java
+================================================================================
+
+package com.tempmail.mapper;
+
+import com.tempmail.dto.InboxDto;
+import com.tempmail.entity.Inbox;
+
+public class InboxMapper {
+
+    public static InboxDto toDto(Inbox inbox) {
+        return InboxDto.builder()
+                .id(inbox.getId())
+                .emailAddress(inbox.getEmailAddress())
+                .expiryTime(inbox.getExpiryTime())
+                .createdAt(inbox.getCreatedAt())
+                .build();
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/mapper/InboxMapper.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/repository/EmailRepository.java
+================================================================================
+
+package com.tempmail.repository;
+
+import com.tempmail.entity.Email;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface EmailRepository extends JpaRepository<Email, UUID> {
+
+    List<Email> findByInboxId(UUID inboxId);
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/repository/EmailRepository.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/repository/InboxRepository.java
+================================================================================
+
+package com.tempmail.repository;
+
+import com.tempmail.entity.Inbox;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface InboxRepository extends JpaRepository<Inbox, UUID> {
+
+    Optional<Inbox> findByEmailAddress(String emailAddress);
+    List<Inbox> findByExpiryTimeBefore(LocalDateTime time);
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/repository/InboxRepository.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/service/CleanupService.java
+================================================================================
+
+package com.tempmail.service;
+
+import com.tempmail.entity.Inbox;
+import com.tempmail.repository.InboxRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CleanupService {
+
+    private final InboxRepository inboxRepository;
+
+    public void deleteExpiredInboxes() {
+        List<Inbox> expiredInboxes = inboxRepository
+                .findByExpiryTimeBefore(LocalDateTime.now());
+
+        inboxRepository.deleteAll(expiredInboxes);
+
+        System.out.println("Deleted expired inboxes: " + expiredInboxes.size());
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/service/CleanupService.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/service/EmailService.java
+================================================================================
+
+package com.tempmail.service;
+
+import com.tempmail.dto.EmailDto;
+import com.tempmail.entity.Email;
+import com.tempmail.entity.Inbox;
+import com.tempmail.mapper.EmailMapper;
+import com.tempmail.repository.EmailRepository;
+import com.tempmail.repository.InboxRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class EmailService {
+
+    private final EmailRepository emailRepository;
+    private final InboxRepository inboxRepository;
+
+    public void addTestEmail(String emailAddress, String sender, String subject, String body) {
+
+        Inbox inbox = inboxRepository.findByEmailAddress(emailAddress)
+                .orElseThrow(() -> new RuntimeException("Inbox not found"));
+
+        Email email = Email.builder()
+                .sender(sender)
+                .subject(subject)
+                .body(body)
+                .receivedAt(LocalDateTime.now())
+                .inbox(inbox)
+                .build();
+
+        emailRepository.save(email);
+    }
+
+    public List<EmailDto> getEmails(String emailAddress) {
+
+        Inbox inbox = inboxRepository.findByEmailAddress(emailAddress)
+                .orElseThrow(() -> new RuntimeException("Inbox not found"));
+
+        return emailRepository.findByInboxId(inbox.getId())
+                .stream()
+                .map(EmailMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public void receiveEmail(String sender, String subject, String body, String recipient) {
+
+        if (recipient == null) {
+            throw new RuntimeException("Recipient is missing");
+        }
+
+        Inbox inbox = inboxRepository.findByEmailAddress(recipient)
+                .orElseThrow(() -> new RuntimeException("Inbox not found"));
+
+        Email email = Email.builder()
+                .sender(sender != null ? sender : "unknown")
+                .subject(subject != null ? subject : "(no subject)")
+                .body(body != null ? body : "")
+                .receivedAt(LocalDateTime.now())
+                .inbox(inbox)
+                .build();
+
+        emailRepository.save(email);
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/service/EmailService.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/service/InboxService.java
+================================================================================
+
+package com.tempmail.service;
+
+import com.tempmail.dto.InboxDto;
+import com.tempmail.entity.Inbox;
+import com.tempmail.mapper.InboxMapper;
+import com.tempmail.repository.InboxRepository;
+import com.tempmail.util.EmailUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class InboxService {
+
+    private final InboxRepository inboxRepository;
+
+    private static final int EXPIRY_MINUTES = 10;
+
+    public InboxDto createInbox() {
+
+        String email = EmailUtil.generateRandomEmail();
+
+        Inbox inbox = Inbox.builder()
+                .emailAddress(email)
+                .createdAt(LocalDateTime.now())
+                .expiryTime(LocalDateTime.now().plusMinutes(EXPIRY_MINUTES))
+                .build();
+
+        return InboxMapper.toDto(inboxRepository.save(inbox));
+    }
+
+    public InboxDto getInbox(String email) {
+        Inbox inbox = inboxRepository.findByEmailAddress(email)
+                .orElseThrow(() -> new RuntimeException("Inbox not found"));
+
+        return InboxMapper.toDto(inbox);
+    }
+
+    public void deleteInbox(UUID id) {
+        inboxRepository.deleteById(id);
+    }
+
+
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/service/InboxService.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/util/CleanupScheduler.java
+================================================================================
+
+package com.tempmail.util;
+
+import com.tempmail.service.CleanupService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class CleanupScheduler {
+
+    private final CleanupService cleanupService;
+
+    @Scheduled(fixedRate = 60000)
+    public void runCleanup() {
+        System.out.println("Running cleanup job...");
+        cleanupService.deleteExpiredInboxes();
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/util/CleanupScheduler.java
+================================================================================
+
+================================================================================
+FILE START: src/main/java/com/tempmail/util/EmailUtil.java
+================================================================================
+
+package com.tempmail.util;
+
+import java.util.UUID;
+
+public class EmailUtil {
+
+    public static String generateRandomEmail() {
+        String random = UUID.randomUUID().toString().substring(0, 6);
+        return random + "@tempmail.com";
+    }
+}
+
+================================================================================
+FILE END: src/main/java/com/tempmail/util/EmailUtil.java
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/css/common.css
+================================================================================
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    text-align: center;
+}
+
+================================================================================
+FILE END: src/main/resources/static/css/common.css
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/css/inbox.css
+================================================================================
+
+#emails {
+    margin-top: 20px;
+}
+
+================================================================================
+FILE END: src/main/resources/static/css/inbox.css
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/css/index.css
+================================================================================
+
+button {
+    padding: 10px;
+    background: #008CFF;
+    color: white;
+}
+
+================================================================================
+FILE END: src/main/resources/static/css/index.css
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/inbox.html
+================================================================================
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inbox</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/inbox.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Your Inbox</h2>
+
+    <div class="email-info">
+        <p>Email: <span id="email"></span></p>
+        <button id="copyBtn">Copy</button>
+    </div>
+
+    <hr/>
+
+    <h3>Emails</h3>
+
+    <div id="emails"></div>
+
+</div>
+
+<script src="/js/inbox.js"></script>
+</body>
+</html>
+
+================================================================================
+FILE END: src/main/resources/static/inbox.html
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/index.html
+================================================================================
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TempMail</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+<h1>TempMail</h1>
+
+<button id="generateBtn">Generate Email</button>
+
+<script src="/js/index.js"></script>
+</body>
+</html>
+
+================================================================================
+FILE END: src/main/resources/static/index.html
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/js/common.js
+================================================================================
+
+
+
+================================================================================
+FILE END: src/main/resources/static/js/common.js
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/js/inbox.js
+================================================================================
+
+const params = new URLSearchParams(window.location.search);
+const email = params.get("email");
+
+document.getElementById("email").innerText = email;
+
+async function loadEmails() {
+    try {
+        const res = await fetch(`/api/emails/${email}`);
+        const emails = await res.json();
+
+        const container = document.getElementById("emails");
+        container.innerHTML = "";
+
+        if (emails.length === 0) {
+            container.innerHTML = "<p>No emails yet</p>";
+            return;
+        }
+
+        emails.forEach(e => {
+            const div = document.createElement("div");
+            div.classList.add("email-card");
+
+            div.innerHTML = `
+                <h4>${e.subject}</h4>
+                <p><b>From:</b> ${e.sender}</p>
+                <p>${e.body}</p>
+                <small>${e.receivedAt}</small>
+                <hr/>
+            `;
+
+            container.appendChild(div);
+        });
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+loadEmails();
+
+================================================================================
+FILE END: src/main/resources/static/js/inbox.js
+================================================================================
+
+================================================================================
+FILE START: src/main/resources/static/js/index.js
+================================================================================
+
+document.getElementById("generateBtn").addEventListener("click", async () => {
+    const res = await fetch("/api/inbox/create", { method: "POST" });
+    const data = await res.json();
+
+    // Redirect to inbox page
+    window.location.href = `/inbox.html?email=${data.emailAddress}`;
+});
+
+================================================================================
+FILE END: src/main/resources/static/js/index.js
+================================================================================

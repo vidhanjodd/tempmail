@@ -14,6 +14,7 @@ public class InboxDto {
 
     private UUID id;
     private String emailAddress;
+    private String accessToken;
     private LocalDateTime expiryTime;
     private LocalDateTime createdAt;
 }

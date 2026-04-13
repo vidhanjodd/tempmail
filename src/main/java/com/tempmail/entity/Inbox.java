@@ -23,8 +23,10 @@ public class Inbox {
     @Column(unique = true, nullable = false)
     private String emailAddress;
 
-    private LocalDateTime expiryTime;
+    @Column(nullable = false)
+    private String accessToken;
 
+    private LocalDateTime expiryTime;
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "inbox", cascade = CascadeType.ALL, orphanRemoval = true)

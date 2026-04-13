@@ -9,6 +9,7 @@ public class InboxMapper {
         return InboxDto.builder()
                 .id(inbox.getId())
                 .emailAddress(inbox.getEmailAddress())
+                .accessToken(inbox.getAccessToken())
                 .expiryTime(inbox.getExpiryTime())
                 .createdAt(inbox.getCreatedAt())
                 .build();

@@ -13,19 +13,23 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",
-                                "/index.html",
-                                "/inbox.html",
-                                "/css/**",
-                                "/js/**",
-                                "/api/**"
-                        ).permitAll()
-                        .anyRequest().permitAll()
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                "default-src 'self'; " +
+                                        "script-src 'self' https://cdnjs.cloudflare.com; " +
+                                        "style-src 'self'; " +
+                                        "object-src 'none'; " +
+                                        "frame-ancestors 'none';"
+                        ))
+                        .frameOptions(frame -> frame.deny())
+                        .httpStrictTransportSecurity(hsts -> hsts
+                                .includeSubDomains(true)
+                                .maxAgeInSeconds(31536000))
                 )
-
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/index.html", "/inbox.html", "/css/**", "/js/**", "/api/**").permitAll()
+                        .anyRequest().denyAll()
+                )
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
