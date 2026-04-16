@@ -45,7 +45,7 @@ public class InboxService {
     }
 
     private String generateRandomEmail() {
-        return randomString(10) + "@tempmail.com";
+        return randomString(10) + "@mail.tmpbox.lol";
     }
 
     private String generateAccessToken() {
