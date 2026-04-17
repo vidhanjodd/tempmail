@@ -5,7 +5,6 @@ const params = new URLSearchParams(window.location.search);
 
         document.getElementById("emailDisplay").textContent = email;
 
-        // Copy button
         document.getElementById("copyBtn").addEventListener("click", () => {
             navigator.clipboard.writeText(email);
             const btn = document.getElementById("copyBtn");
@@ -23,7 +22,6 @@ const params = new URLSearchParams(window.location.search);
             window.location.href = "/";
         });
 
-        // Timer
         function startTimer() {
             const expiryKey = "inboxExpiry_" + email;
             let expiry = localStorage.getItem(expiryKey);
@@ -113,7 +111,6 @@ const params = new URLSearchParams(window.location.search);
                     return;
                 }
 
-                // Only re-render if count changed
                 if (container.dataset.count === String(emails.length) && container.children.length > 0) return;
 
                 container.innerHTML = "";
