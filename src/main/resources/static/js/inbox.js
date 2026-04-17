@@ -17,6 +17,12 @@ const params = new URLSearchParams(window.location.search);
             }, 2000);
         });
 
+        document.getElementById("newInboxBtn").addEventListener("click", () => {
+            localStorage.removeItem("inboxToken");
+            localStorage.removeItem("inboxExpiry_" + email);
+            window.location.href = "/";
+        });
+
         // Timer
         function startTimer() {
             const expiryKey = "inboxExpiry_" + email;
@@ -49,6 +55,15 @@ const params = new URLSearchParams(window.location.search);
             return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
+        function toPlainText(html) {
+            const doc = new DOMParser().parseFromString(html || "", "text/html");
+            return doc.body.textContent || "";
+        }
+
+        function setEmailBody(el, body) {
+            el.textContent = toPlainText(body);
+        }
+
         // Load emails
         async function loadEmails(showSpinner = false) {
             const token = localStorage.getItem("inboxToken");
@@ -58,8 +73,11 @@ const params = new URLSearchParams(window.location.search);
             if (showSpinner) refreshBtn.classList.add("spinning");
 
             try {
-                const res = await fetch(`/api/emails/${encodeURIComponent(email)}?token=${token}`);
-
+                const res = await fetch(`/api/emails/${encodeURIComponent(email)}`, {
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        });
                 if (res.status === 410) {
                     document.getElementById("emailsContainer").innerHTML = `
                         <div class="expired-notice">
@@ -71,10 +89,14 @@ const params = new URLSearchParams(window.location.search);
 
                 if (res.status === 403) { window.location.href = "/"; return; }
 
+                if (!res.ok) {
+                    throw new Error(`Failed to load emails: ${res.status}`);
+                }
+
                 const emails = await res.json();
-                document.getElementById("countBadge").textContent = emails.length;
 
                 const container = document.getElementById("emailsContainer");
+                document.getElementById("countBadge").textContent = emails.length;
 
                 if (emails.length === 0) {
                     container.innerHTML = `
@@ -92,8 +114,7 @@ const params = new URLSearchParams(window.location.search);
                 }
 
                 // Only re-render if count changed
-                if (container.dataset.count === String(emails.length)) return;
-                container.dataset.count = emails.length;
+                if (container.dataset.count === String(emails.length) && container.children.length > 0) return;
 
                 container.innerHTML = "";
                 emails.forEach((e, i) => {
@@ -117,18 +138,20 @@ const params = new URLSearchParams(window.location.search);
 
                     const sender = document.createElement("div");
                     sender.className = "email-sender";
-                    sender.innerHTML = `<span class="sender-dot">${initials}</span>`;
+                    const senderDot = document.createElement("span");
+                    senderDot.className = "sender-dot";
+                    senderDot.textContent = initials;
                     const senderText = document.createElement("span");
                     senderText.textContent = e.sender || "unknown";
-                    sender.appendChild(senderText);
+                    sender.append(senderDot, senderText);
 
                     const preview = document.createElement("div");
                     preview.className = "email-preview";
-                    preview.textContent = (e.body || "").replace(/<[^>]*>/g, "").slice(0, 120);
+                    preview.textContent = toPlainText(e.body).slice(0, 120);
 
                     const body = document.createElement("div");
                     body.className = "email-body";
-                    body.innerHTML = DOMPurify.sanitize(e.body || "");
+                    setEmailBody(body, e.body);
 
                     div.append(subject, sender, preview, body);
 
@@ -138,6 +161,7 @@ const params = new URLSearchParams(window.location.search);
 
                     container.appendChild(div);
                 });
+                container.dataset.count = String(emails.length);
 
             } catch (err) {
                 console.error(err);

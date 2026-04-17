@@ -64,13 +64,19 @@ public class EmailService {
             return;
         }
 
-        Optional<Inbox> inboxOpt = inboxRepository.findByEmailAddress(recipient);
+        String recipientAddress = extractEmail(recipient);
+        Optional<Inbox> inboxOpt = inboxRepository.findByEmailAddress(recipientAddress);
         if (inboxOpt.isEmpty()) {
-            log.warn("Email received for unknown/expired inbox: {}", recipient);
+            log.warn("Email received for unknown inbox: {}", recipientAddress);
             return;
         }
 
         Inbox inbox = inboxOpt.get();
+
+        if (inbox.getExpiryTime().isBefore(LocalDateTime.now())) {
+            log.warn("Email received for expired inbox: {}", recipientAddress);
+            return;
+        }
 
         Email email = Email.builder()
                 .sender(sender   != null ? sender   : "unknown")
@@ -81,5 +87,15 @@ public class EmailService {
                 .build();
 
         emailRepository.save(email);
+    }
+
+    private String extractEmail(String raw) {
+        String value = raw.trim();
+        int start = value.indexOf('<');
+        int end = value.indexOf('>');
+        if (start >= 0 && end > start) {
+            value = value.substring(start + 1, end);
+        }
+        return value.trim().toLowerCase();
     }
 }
