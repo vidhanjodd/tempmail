@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TempMail — Disposable Email</title>
+    <title>TMPBOX — Disposable Email</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0a0a'/><rect width='100' height='100' rx='16' fill='none' stroke='%23c8f060' stroke-width='6'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='Arial Black' font-weight='900' fill='%23c8f060'>T</text></svg>">
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="logo">TMP<span>BOX</span></div>
+    <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#feedback">Feedback</a>
+    </div>
+</nav>
+
 <div class="container">
     <div class="badge">✦ Disposable Email Service</div>
-    <h1>TEMP<span>MAIL</span></h1>
+    <h1>TMP<span>BOX</span></h1>
     <p class="subtitle">Generate a throwaway inbox instantly. No signup, no tracking, gone in 10 minutes.</p>
 
     <button class="btn" id="generateBtn">
-            <span class="btn-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 5v14M5 12h14"/>
-                </svg>
-            </span>
+        <span class="btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+        </span>
         <div class="spinner"></div>
         Generate Email
     </button>
@@ -29,8 +39,168 @@
         <div class="feature"><div class="feature-dot"></div>10 min expiry</div>
         <div class="feature"><div class="feature-dot"></div>No signup</div>
         <div class="feature"><div class="feature-dot"></div>Auto-refresh</div>
+        <div class="feature"><div class="feature-dot"></div>Real delivery</div>
     </div>
 </div>
+
+<div class="stats-bar">
+    <div class="stat">
+        <span class="stat-value" id="statEmails">—</span>
+        <span class="stat-label">Emails Received</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <span class="stat-value" id="statInboxes">—</span>
+        <span class="stat-label">Inboxes Created</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <span class="stat-value">10<span style="font-size:0.6em">min</span></span>
+        <span class="stat-label">Inbox Lifetime</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <span class="stat-value">100%</span>
+        <span class="stat-label">Free Forever</span>
+    </div>
+</div>
+
+<section class="section" id="how">
+    <div class="section-label">✦ How it works</div>
+    <h2 class="section-title">Three steps, zero hassle</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+            </div>
+            <div class="step-title">Generate</div>
+            <div class="step-desc">Click the button. Get a real email address instantly. No account needed.</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+            </div>
+            <div class="step-title">Use it</div>
+            <div class="step-desc">Copy the address and use it wherever you need to sign up or verify.</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <div class="step-title">Receive</div>
+            <div class="step-desc">Emails arrive in real-time. Read them, then let the inbox self-destruct.</div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="faq">
+    <div class="section-label">✦ FAQ</div>
+    <h2 class="section-title">Common questions</h2>
+    <div class="faq-list">
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>Is TMPBOX really free?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">Yes, completely free. No hidden fees, no premium tiers, no credit card required. Ever.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>Can I extend the inbox lifetime?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">Not currently. Each inbox lasts exactly 10 minutes. After that, it's gone permanently. Just generate a new one.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>Can I send emails from TMPBOX?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">No. TMPBOX is receive-only. It's designed purely for receiving verification emails and newsletters.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>Are my emails private?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">Each inbox is secured with a unique access token. Only you can access your inbox during its 10-minute lifetime.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">
+                <span>What happens to emails after expiry?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">All emails and inbox data are permanently deleted from our servers after the 10-minute window closes.</div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="feedback">
+    <div class="section-label">✦ Feedback</div>
+    <h2 class="section-title">How are we doing?</h2>
+
+    <div class="rating-card">
+        <div class="rating-prompt">Rate your experience</div>
+        <div class="stars" id="starRating">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+        </div>
+        <div class="rating-label" id="ratingLabel">Click to rate</div>
+
+        <div class="feedback-form" id="feedbackForm">
+            <textarea id="feedbackText" placeholder="Tell us what you think (optional)..." rows="3"></textarea>
+            <button class="submit-btn" id="submitFeedback">Send Feedback</button>
+        </div>
+
+        <div class="feedback-thanks" id="feedbackThanks" style="display:none">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Thanks for your feedback!
+        </div>
+    </div>
+
+    <div class="testimonials">
+        <div class="testimonial">
+            <div class="t-stars">★★★★★</div>
+            <div class="t-text">"Exactly what I needed. No fuss, no login, just works."</div>
+            <div class="t-author">— Dev from Bangalore</div>
+        </div>
+        <div class="testimonial">
+            <div class="t-stars">★★★★★</div>
+            <div class="t-text">"Clean UI and emails actually arrive fast. Impressed."</div>
+            <div class="t-author">— Product Designer</div>
+        </div>
+        <div class="testimonial">
+            <div class="t-stars">★★★★☆</div>
+            <div class="t-text">"Would love a longer expiry option but does the job perfectly."</div>
+            <div class="t-author">— QA Engineer</div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-logo">TMP<span>BOX</span></div>
+    <div class="footer-text">Disposable email, no strings attached.</div>
+    <div class="footer-links">
+        <span>Built with Spring Boot + Mailgun</span>
+        <span class="footer-dot">·</span>
+        <span>© 2026 TMPBOX</span>
+    </div>
+</footer>
 
 <script src="/js/index.js"></script>
 </body>

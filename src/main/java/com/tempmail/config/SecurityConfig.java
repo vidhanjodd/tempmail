@@ -25,9 +25,9 @@ public class SecurityConfig {
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp.policyDirectives(
                                 "default-src 'self'; " +
-                                        "script-src 'self' https://cdnjs.cloudflare.com; " +
-                                        "style-src 'self' https://fonts.googleapis.com; " +
-                                        "font-src 'self' https://fonts.gstatic.com; " +
+                                        "script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; " +
+                                        "style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; " +
+                                        "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
                                         "object-src 'none'; " +
                                         "frame-ancestors 'none';"
                         ))
