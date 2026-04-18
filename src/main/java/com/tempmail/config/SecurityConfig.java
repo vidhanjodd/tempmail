@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/emails/test").denyAll()
                         .requestMatchers(
                                 "/", "/index.html", "/inbox.html",
+                                "/robots.txt", "/sitemap.xml", "/og-image.png",
                                 "/css/**", "/js/**",
                                 "/api/**"
                         ).permitAll()

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /inbox.html
+
+Sitemap: https://www.tmpbox.lol/sitemap.xml
