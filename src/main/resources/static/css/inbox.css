@@ -1,342 +1,424 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        :root {
-            --bg: #0a0a0a;
-            --surface: #111111;
-            --surface2: #1a1a1a;
-            --border: #2a2a2a;
-            --accent: #c8f060;
-            --text: #f0f0f0;
-            --text-muted: #666;
-            --text-dim: #999;
-            --danger: #ff5c5c;
-        }
+:root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #c8f060;
+    --text: #f0f0f0;
+    --text-muted: #666;
+    --text-dim: #999;
+    --danger: #ff5c5c;
+}
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Syne', sans-serif;
-            min-height: 100vh;
-            padding: 0;
-        }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+}
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: 0;
-        }
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+            linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 0;
+}
 
-        /* HEADER */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(10,10,10,0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-        }
+/* HEADER */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
 
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-        .logo span { color: var(--accent); }
+.logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+.logo span { color: var(--accent); }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .timer-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 13px;
-            color: var(--accent);
-            background: rgba(200,240,96,0.08);
-            border: 1px solid rgba(200,240,96,0.2);
-            padding: 6px 12px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.timer-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    background: rgba(200,240,96,0.08);
+    border: 1px solid rgba(200,240,96,0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
-        .timer-dot {
-            width: 6px; height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
+.timer-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
 
-        .timer-badge.expiring { color: var(--danger); border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
-        .timer-badge.expiring .timer-dot { background: var(--danger); }
+.timer-badge.expiring { color: var(--danger); border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.08); }
+.timer-badge.expiring .timer-dot { background: var(--danger); }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
 
-        .new-inbox-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 6px 14px;
-            font-family: 'Syne', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .new-inbox-btn:hover { border-color: var(--text-muted); color: var(--text); }
+.new-inbox-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.new-inbox-btn:hover { border-color: var(--text-muted); color: var(--text); }
 
-        /* MAIN */
-        main {
-            position: relative;
-            z-index: 1;
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 2.5rem 2rem;
-        }
+/* MAIN */
+main {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+}
 
-        /* EMAIL ADDRESS CARD */
-        .address-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            animation: fadeUp 0.4s ease both;
-        }
+/* EMAIL ADDRESS CARD */
+.address-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.4s ease both;
+}
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
-        .address-label {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
+.address-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
 
-        .address-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.address-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        .address-text {
-            font-family: 'DM Mono', monospace;
-            font-size: clamp(14px, 3vw, 18px);
-            font-weight: 500;
-            color: var(--accent);
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+.address-text {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(14px, 3vw, 18px);
+    font-weight: 500;
+    color: var(--accent);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        .copy-btn {
-            flex-shrink: 0;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 8px 16px;
-            font-family: 'Syne', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .copy-btn.copied { border-color: var(--accent); color: var(--accent); background: rgba(200,240,96,0.08); }
+.copy-btn {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+.copy-btn.copied { border-color: var(--accent); color: var(--accent); background: rgba(200,240,96,0.08); }
 
-        /* INBOX SECTION */
-        .inbox-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
+/* INBOX SECTION */
+.inbox-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
 
-        .inbox-title {
-            font-size: 13px;
-            font-family: 'DM Mono', monospace;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.inbox-title {
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .count-badge {
-            background: var(--accent);
-            color: #0a0a0a;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 20px;
-            min-width: 20px;
-            text-align: center;
-        }
+.count-badge {
+    background: var(--accent);
+    color: #0a0a0a;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+}
 
-        .refresh-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 4px;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-        }
-        .refresh-btn:hover { color: var(--accent); }
-        .refresh-btn.spinning svg { animation: spin 0.7s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+.refresh-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+}
+.refresh-btn:hover { color: var(--accent); }
+.refresh-btn.spinning svg { animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-muted);
-            animation: fadeUp 0.4s ease both 0.1s;
-        }
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+    animation: fadeUp 0.4s ease both 0.1s;
+}
 
-        .empty-icon {
-            width: 56px; height: 56px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.empty-icon {
+    width: 56px; height: 56px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            margin: 0 auto 1rem;
-            color: var(--text-muted);
-        }
+    margin: 0 auto 1rem;
+    color: var(--text-muted);
+}
 
-        .empty-state p { font-size: 14px; margin-top: 6px; }
-        .empty-state strong { color: var(--text-dim); font-weight: 600; display: block; font-size: 16px; margin-bottom: 4px; }
+.empty-state p { font-size: 14px; margin-top: 6px; }
+.empty-state strong { color: var(--text-dim); font-weight: 600; display: block; font-size: 16px; margin-bottom: 4px; }
 
-        /* EMAIL CARDS */
-        .email-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            animation: fadeUp 0.3s ease both;
-        }
+/* EMAIL CARDS */
+.email-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    animation: fadeUp 0.3s ease both;
+}
 
-        .email-card:hover {
-            border-color: #444;
-            background: var(--surface2);
-            transform: translateY(-1px);
-        }
+.email-card:hover {
+    border-color: #444;
+    background: var(--surface2);
+    transform: translateY(-1px);
+}
 
-        .email-card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 6px;
-        }
+.email-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
 
-        .email-subject {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+.email-subject {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        .email-time {
-            font-family: 'DM Mono', monospace;
-            font-size: 11px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
+.email-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
 
-        .email-sender {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.email-sender {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
-        .sender-dot {
-            width: 18px; height: 18px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--accent);
-            flex-shrink: 0;
-        }
+.sender-dot {
+    width: 18px; height: 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+}
 
-        .email-preview {
-            font-size: 13px;
-            color: var(--text-muted);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+.email-preview {
+    font-size: 13px;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        /* EXPANDED EMAIL */
-        .email-body {
-            display: none;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 14px;
-            line-height: 1.7;
-            color: var(--text-dim);
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
+/* EXPANDED EMAIL */
+.email-body {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
-        .email-card.expanded .email-body { display: block; }
-        .email-card.expanded { border-color: #3a3a3a; }
+.email-card.expanded .email-body { display: block; }
+.email-card.expanded { border-color: #3a3a3a; }
 
-        /* EXPIRED STATE */
-        .expired-notice {
-            text-align: center;
-            padding: 3rem;
-            background: rgba(255,92,92,0.05);
-            border: 1px solid rgba(255,92,92,0.2);
-            border-radius: 12px;
-            color: var(--danger);
-        }
-        .expired-notice p { margin-top: 8px; font-size: 14px; color: var(--text-muted); }
+/* EXPIRED STATE */
+.expired-notice {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(255,92,92,0.05);
+    border: 1px solid rgba(255,92,92,0.2);
+    border-radius: 12px;
+    color: var(--danger);
+}
+.expired-notice p { margin-top: 8px; font-size: 14px; color: var(--text-muted); }
+/* Override common.css body styles that conflict with inbox dark theme */
+body {
+    background: var(--bg) !important;
+    text-align: unset !important;
+    min-height: 100vh;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .header {
+        padding: 0 1rem;
+        height: 56px;
+        gap: 8px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .header-right {
+        gap: 6px;
+    }
+
+    .timer-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .new-inbox-btn {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+
+    main {
+        padding: 1.25rem 1rem;
+        min-height: calc(100vh - 56px);
+    }
+
+    .address-card {
+        padding: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .address-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .address-text {
+        text-align: center;
+    }
+
+    .copy-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .email-card {
+        padding: 1rem;
+    }
+
+    .email-card-top {
+        gap: 8px;
+    }
+
+    .email-subject {
+        font-size: 14px;
+    }
+
+    .email-time {
+        font-size: 10px;
+    }
+
+    .empty-state {
+        padding: 3rem 1rem;
+    }
+
+    .expired-notice {
+        padding: 2rem 1rem;
+    }
+}
