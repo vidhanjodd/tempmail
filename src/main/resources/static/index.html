@@ -7,6 +7,13 @@
     <meta name="description" content="Create a free temporary email address instantly with TMPBOX. Receive verification emails, avoid spam, and use a disposable inbox that expires automatically in 10 minutes.">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://www.tmpbox.lol/">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TMPBOX">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Temporary Disposable Email Inbox | TMPBOX">
@@ -32,7 +39,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0a0a'/><rect width='100' height='100' rx='16' fill='none' stroke='%23c8f060' stroke-width='6'/><text y='68' x='50' text-anchor='middle' font-size='52' font-family='Arial Black' font-weight='900' fill='%23c8f060'>T</text></svg>">
+    <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
 </head>
 <body>
 
@@ -59,6 +66,10 @@
         <div class="spinner"></div>
         Generate Email
     </button>
+    <button class="install-btn" id="installAppBtn" type="button" hidden>
+        Install App
+    </button>
+    <p class="install-note" id="installNote" hidden>Add TMPBOX to your home screen for one-tap access.</p>
 
     <div class="features">
         <div class="feature"><div class="feature-dot"></div>10 min expiry</div>
@@ -227,6 +238,7 @@
     </div>
 </footer>
 
+<script src="/js/common.js"></script>
 <script src="/js/index.js"></script>
 </body>
 </html>

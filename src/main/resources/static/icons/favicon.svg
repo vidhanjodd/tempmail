@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TMPBOX icon">
+    <rect width="100" height="100" rx="16" fill="#0a0a0a"/>
+    <rect width="100" height="100" rx="16" fill="none" stroke="#c8f060" stroke-width="6"/>
+    <text x="50" y="68" text-anchor="middle" font-size="52" font-family="Arial Black, Arial, sans-serif" font-weight="900" fill="#c8f060">T</text>
+</svg>

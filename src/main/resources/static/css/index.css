@@ -158,6 +158,36 @@ h1 span { color: var(--accent); }
 .btn svg { transition: transform 0.2s; }
 .btn:hover svg { transform: rotate(15deg); }
 
+.install-btn {
+    display: block;
+    margin: 1rem auto 0;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(200,240,96,0.28);
+    background: rgba(200,240,96,0.06);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(200,240,96,0.55);
+    background: rgba(200,240,96,0.11);
+}
+
+.install-note {
+    margin-top: 0.9rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
 .spinner {
     width: 18px; height: 18px;
     border: 2px solid rgba(0,0,0,0.2);

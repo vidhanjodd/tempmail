@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMPBOX Offline</title>
+    <meta name="theme-color" content="#0a0a0a">
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background:
+                radial-gradient(circle at top, rgba(200, 240, 96, 0.14), transparent 35%),
+                #0a0a0a;
+            color: #f5f5f0;
+            font-family: "Syne", sans-serif;
+        }
+
+        .card {
+            width: min(100%, 480px);
+            padding: 32px;
+            border: 1px solid rgba(200, 240, 96, 0.25);
+            border-radius: 24px;
+            background: rgba(16, 16, 16, 0.92);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2rem, 6vw, 3rem);
+        }
+
+        p {
+            margin: 0 0 18px;
+            color: rgba(245, 245, 240, 0.76);
+            line-height: 1.6;
+        }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 999px;
+            background: #c8f060;
+            color: #0a0a0a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<main class="card">
+    <h1>Offline</h1>
+    <p>TMPBOX can still open its cached screens, but generating inboxes and fetching emails needs a live network connection.</p>
+    <a href="/">Return Home</a>
+</main>
+</body>
+</html>

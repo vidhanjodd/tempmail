@@ -42,7 +42,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/index.html", "/inbox.html",
                                 "/robots.txt", "/sitemap.xml", "/og-image.png",
+                                "/manifest.webmanifest", "/service-worker.js", "/offline.html",
                                 "/css/**", "/js/**",
+                                "/icons/**",
                                 "/api/**"
                         ).permitAll()
                         .anyRequest().denyAll()
