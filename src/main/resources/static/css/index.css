@@ -307,6 +307,7 @@ h1 span { color: var(--accent); }
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 2rem 1.5rem;
+    text-align: center;
     transition: border-color 0.2s, transform 0.2s;
 }
 .step:hover { border-color: rgba(200,240,96,0.3); transform: translateY(-4px); }
@@ -329,6 +330,25 @@ h1 span { color: var(--accent); }
     justify-content: center;
     color: var(--accent);
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step-icon svg {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.step-icon-generate svg {
+    transform: translateY(0);
+}
+
+.step-icon-use svg {
+    transform: translate(0.5px, 0.5px);
+}
+
+.step-icon-receive svg {
+    transform: translate(-0.5px, 0.5px);
 }
 
 .step-title {
