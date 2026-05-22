@@ -68,7 +68,34 @@ const params = new URLSearchParams(window.location.search);
         }
 
         function setEmailBody(el, body) {
-            el.textContent = toPlainText(body);
+            el.innerHTML = "";
+            if (body && (body.trim().startsWith("<") || body.includes("<html") || body.includes("<div") || body.includes("<p>") || body.includes("<table"))) {
+                const iframe = document.createElement("iframe");
+                iframe.className = "email-iframe";
+                iframe.sandbox = "allow-same-origin allow-popups allow-popups-to-escape-sandbox";
+                iframe.srcdoc = body;
+                
+                iframe.addEventListener("load", () => {
+                    try {
+                        const doc = iframe.contentDocument || iframe.contentWindow.document;
+                        doc.querySelectorAll("a").forEach(a => {
+                            a.target = "_blank";
+                        });
+                        iframe.style.height = (doc.documentElement.scrollHeight + 30) + "px";
+                    } catch (err) {
+                        console.error("Error setting iframe contents", err);
+                    }
+                });
+                
+                el.appendChild(iframe);
+            } else {
+                const pre = document.createElement("pre");
+                pre.textContent = body || "";
+                pre.style.whiteSpace = "pre-wrap";
+                pre.style.fontFamily = "inherit";
+                pre.style.margin = "0";
+                el.appendChild(pre);
+            }
         }
 
         // Load emails

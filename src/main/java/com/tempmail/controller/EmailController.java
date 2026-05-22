@@ -47,7 +47,7 @@ public class EmailController {
             return ResponseEntity.ok("Invalid signature — ignored");
         }
 
-        String body = firstPresent(strippedText, bodyPlain, bodyHtml);
+        String body = firstPresent(bodyHtml, bodyPlain, strippedText);
         emailService.receiveEmail(sender, subject, body, recipient);
         return ResponseEntity.ok("Email received");
     }

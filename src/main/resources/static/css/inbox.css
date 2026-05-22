@@ -330,6 +330,17 @@ main {
 .email-card.expanded .email-body { display: block; }
 .email-card.expanded { border-color: #3a3a3a; }
 
+.email-iframe {
+    width: 100%;
+    border: none;
+    background: #ffffff;
+    border-radius: 8px;
+    min-height: 250px;
+    margin-top: 8px;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 /* EXPIRED STATE */
 .expired-notice {
     text-align: center;
