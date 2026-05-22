@@ -54,7 +54,16 @@ const params = new URLSearchParams(window.location.search);
         }
 
         function toPlainText(html) {
-            const doc = new DOMParser().parseFromString(html || "", "text/html");
+            if (!html) return "";
+            if (!html.includes("<") && !html.includes(">")) {
+                return html;
+            }
+            const doc = new DOMParser().parseFromString(html, "text/html");
+            doc.querySelectorAll("style, script").forEach(el => el.remove());
+            doc.querySelectorAll("br").forEach(el => el.replaceWith("\n"));
+            doc.querySelectorAll("p, div, tr, li, h1, h2, h3, h4, h5, h6").forEach(el => {
+                el.after("\n");
+            });
             return doc.body.textContent || "";
         }
 
